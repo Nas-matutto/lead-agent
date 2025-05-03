@@ -85,6 +85,7 @@ class AnthropicProvider(BaseLLMProvider):
         4. 10 search keywords to find potential leads
         
         Format your response as a valid JSON object with these keys: target_audience, markets, outreach_strategies, search_keywords
+        The target_audience should be an object with title, description, industry, company_size, and role fields.
         Do not include any explanatory text before or after the JSON.
         """
         
@@ -95,11 +96,31 @@ class AnthropicProvider(BaseLLMProvider):
             json_str = response.strip()
             result = json.loads(json_str)
             
+            # Ensure target_audience is a dictionary
+            if isinstance(result.get("target_audience"), list) and len(result.get("target_audience", [])) > 0:
+                # If target_audience is a list, take the first item
+                result["target_audience"] = result["target_audience"][0]
+            elif not result.get("target_audience"):
+                # If target_audience is missing, create a default one
+                result["target_audience"] = {
+                    "title": "General Business",
+                    "description": "Could not parse target audience from model response",
+                    "industry": "Various",
+                    "company_size": "Any",
+                    "role": "Decision maker"
+                }
+            
             # Ensure required keys exist
             required_keys = ["target_audience", "markets", "outreach_strategies", "search_keywords"]
             for key in required_keys:
                 if key not in result:
                     result[key] = []
+            
+            # Ensure target_audience has all required fields
+            target_audience_fields = ["title", "description", "industry", "company_size", "role"]
+            for field in target_audience_fields:
+                if field not in result["target_audience"]:
+                    result["target_audience"][field] = ""
             
             return result
         except json.JSONDecodeError:

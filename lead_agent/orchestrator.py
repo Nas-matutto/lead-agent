@@ -134,7 +134,7 @@ class LeadAgentOrchestrator:
         
         # Filter leads if IDs are provided
         if selected_ids:
-            filtered_leads = [lead for lead in leads if lead.get("id") in selected_ids]
+            filtered_leads = [lead for lead in leads if str(lead.get("id")) in [str(id) for id in selected_ids]]
         else:
             filtered_leads = leads
             

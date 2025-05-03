@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Agent - B2B Lead Generation Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .bg-gradient {
+      background: linear-gradient(to right, #4f46e5, #7c3aed);
+    }
+    .modal {
+      transition: opacity 0.3s ease;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Header -->
+  <header class="bg-gradient text-white shadow-md">
+    <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+      <div class="flex items-center">
+        <i class="fas fa-robot text-2xl mr-3"></i>
+        <h1 class="text-2xl font-bold">Lead Agent</h1>
+      </div>
+      <div>
+        <button class="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
+          <i class="fas fa-plug mr-1"></i> API Keys
+        </button>
+        <button class="ml-3 bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
+          <i class="fas fa-question-circle mr-1"></i> Help
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Tabs -->
+    <div class="mb-6 border-b border-gray-200">
+      <ul class="flex flex-wrap -mb-px">
+        <li class="mr-2">
+          <a href="#" class="tab-link active inline-block p-4 border-b-2 border-indigo-500 text-indigo-600 font-medium" data-tab="product">
+            <i class="fas fa-bullseye mr-2"></i> Product Analysis
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#" class="tab-link inline-block p-4 border-b-2 border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-700 font-medium" data-tab="leads">
+            <i class="fas fa-users mr-2"></i> Lead Generation
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#" class="tab-link inline-block p-4 border-b-2 border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-700 font-medium" data-tab="sequence">
+            <i class="fas fa-envelope mr-2"></i> Sequences
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#" class="tab-link inline-block p-4 border-b-2 border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-700 font-medium" data-tab="settings">
+            <i class="fas fa-cog mr-2"></i> Settings
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Product Analysis Tab -->
+    <div id="product-tab" class="tab-content active">
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">What product or service are you selling?</h2>
+        <p class="text-gray-600 mb-4">
+          Describe your product or service in detail. The AI will analyze it and suggest the best target audience.
+        </p>
+        <textarea class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" rows="5" placeholder="We sell a cloud-based project management software that helps teams track tasks, collaborate on documents, and automate workflows. It integrates with popular tools like Slack, Google Workspace, and Microsoft Office."></textarea>
+        <div class="flex justify-end">
+          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-magic mr-2"></i> Analyze Product
+          </button>
+        </div>
+      </div>
+
+      <!-- Analysis Results (Initially Hidden) -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-800">Analysis Results</h2>
+          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+            <i class="fas fa-check-circle mr-1"></i> Complete
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="font-semibold text-lg text-gray-700 mb-3">
+              <i class="fas fa-bullseye text-indigo-500 mr-2"></i> Target Audience
+            </h3>
+            <div class="bg-gray-50 p-4 rounded-md">
+              <h4 class="font-bold">Mid-sized Technology Companies</h4>
+              <p class="text-gray-600">
+                Companies with 50-500 employees that need to coordinate multiple projects 
+                across teams and are looking to streamline their workflow processes.
+              </p>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <div class="bg-indigo-50 p-2 rounded">
+                  <span class="text-xs text-gray-500">Industry</span>
+                  <p class="font-medium">Technology</p>
+                </div>
+                <div class="bg-indigo-50 p-2 rounded">
+                  <span class="text-xs text-gray-500">Company Size</span>
+                  <p class="font-medium">50-500 employees</p>
+                </div>
+                <div class="bg-indigo-50 p-2 rounded">
+                  <span class="text-xs text-gray-500">Role</span>
+                  <p class="font-medium">Project Managers</p>
+                </div>
+                <div class="bg-indigo-50 p-2 rounded">
+                  <span class="text-xs text-gray-500">Pain Point</span>
+                  <p class="font-medium">Workflow Inefficiency</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-lg text-gray-700 mb-3">
+              <i class="fas fa-globe text-indigo-500 mr-2"></i> Recommended Markets
+            </h3>
+            <div class="bg-gray-50 p-4 rounded-md">
+              <ul class="space-y-3">
+                <li class="flex">
+                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">1</span>
+                  <div>
+                    <h4 class="font-bold">Software Development Companies</h4>
+                    <p class="text-gray-600 text-sm">Focus on development teams that need to coordinate tasks.</p>
+                  </div>
+                </li>
+                <li class="flex">
+                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">2</span>
+                  <div>
+                    <h4 class="font-bold">Marketing Agencies</h4>
+                    <p class="text-gray-600 text-sm">Agencies managing multiple client projects simultaneously.</p>
+                  </div>
+                </li>
+                <li class="flex">
+                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">3</span>
+                  <div>
+                    <h4 class="font-bold">E-commerce Businesses</h4>
+                    <p class="text-gray-600 text-sm">Businesses coordinating product launches and marketing.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <h3 class="font-semibold text-lg text-gray-700 mb-3">
+            <i class="fas fa-search text-indigo-500 mr-2"></i> Search Keywords
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">project management software</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">workflow automation tools</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">tech company productivity</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">team collaboration platform</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">task tracking software</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">software development project management</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">marketing agency project tools</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">slack integration project management</span>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-users mr-2"></i> Generate Leads
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Generation Tab -->
+    <div id="leads-tab" class="tab-content">
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-800">Lead Generation</h2>
+          <div>
+            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium hover:bg-gray-50 transition mr-2">
+              <i class="fas fa-filter mr-1"></i> Filter
+            </button>
+            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium hover:bg-gray-50 transition">
+              <i class="fas fa-sort mr-1"></i> Sort
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-4 flex justify-between items-center">
+          <div class="relative w-64">
+            <input type="text" placeholder="Search leads..." class="w-full px-4 py-2 border border-gray-300 rounded-md pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          </div>
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-sync-alt mr-1"></i> Generate More Leads
+          </button>
+        </div>
+
+        <!-- Leads Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-4 text-left w-8">
+                  <input type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600">
+                </th>
+                <th class="py-3 px-4 text-left">Name</th>
+                <th class="py-3 px-4 text-left">Company</th>
+                <th class="py-3 px-4 text-left">Title</th>
+                <th class="py-3 px-4 text-left">Email</th>
+                <th class="py-3 px-4 text-left">Insight</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm">
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-3 px-4 text-left">
+                  <input type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600">
+                </td>
+                <td class="py-3 px-4 text-left">Sarah Johnson</td>
+                <td class="py-3 px-4 text-left">TechFlow Solutions</td>
+                <td class="py-3 px-4 text-left">Project Manager</td>
+                <td class="py-3 px-4 text-left">sarah.j@techflow.io</td>
+                <td class="py-3 px-4 text-left">Growing team, manually tracking projects</td>
+                <td class="py-3 px-4 text-center">
+                  <button class="text-blue-500 hover:text-blue-700 mr-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="text-green-500 hover:text-green-700">
+                    <i class="fas fa-envelope"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-3 px-4 text-left">
+                  <input type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600">
+                </td>
+                <td class="py-3 px-4 text-left">Michael Chen</td>
+                <td class="py-3 px-4 text-left">Nova Digital</td>
+                <td class="py-3 px-4 text-left">Director of Operations</td>
+                <td class="py-3 px-4 text-left">michael@novadigital.com</td>
+                <td class="py-3 px-4 text-left">Recently expanded to 3 new clients</td>
+                <td class="py-3 px-4 text-center">
+                  <button class="text-blue-500 hover:text-blue-700 mr-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="text-green-500 hover:text-green-700">
+                    <i class="fas fa-envelope"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-3 px-4 text-left">
+                  <input type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600">
+                </td>
+                <td class="py-3 px-4 text-left">Emily Rodriguez</td>
+                <td class="py-3 px-4 text-left">Spark Creative</td>
+                <td class="py-3 px-4 text-left">Marketing Team Lead</td>
+                <td class="py-3 px-4 text-left">e.rodriguez@sparkcreative.co</td>
+                <td class="py-3 px-4 text-left">Looking for better client collaboration tools</td>
+                <td class="py-3 px-4 text-center">
+                  <button class="text-blue-500 hover:text-blue-700 mr-2">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="text-green-500 hover:text-green-700">
+                    <i class="fas fa-envelope"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-4 flex justify-between items-center">
+          <div class="text-gray-600">
+            Showing 3 of 10 leads
+          </div>
+          <div class="flex">
+            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-l-md font-medium hover:bg-gray-50 transition">
+              Previous
+            </button>
+            <button class="bg-white border-t border-b border-r border-gray-300 text-gray-700 px-4 py-2 rounded-r-md font-medium hover:bg-gray-50 transition">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-envelope mr-2"></i> Create Sequence
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sequences Tab -->
+    <div id="sequence-tab" class="tab-content">
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold text-gray-800">Create Outreach Sequence</h2>
+          <div>
+            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md font-medium hover:bg-gray-200 transition">
+              <i class="fas fa-save mr-1"></i> Save Template
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Selected Leads (3)</label>
+          <div class="flex flex-wrap gap-2">
+            <div class="bg-indigo-50 px-3 py-2 rounded-md flex items-center">
+              <span>Sarah Johnson (TechFlow)</span>
+              <button class="ml-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="bg-indigo-50 px-3 py-2 rounded-md flex items-center">
+              <span>Michael Chen (Nova Digital)</span>
+              <button class="ml-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="bg-indigo-50 px-3 py-2 rounded-md flex items-center">
+              <span>Emily Rodriguez (Spark Creative)</span>
+              <button class="ml-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email Subject</label>
+          <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="Streamline Your Project Management with Our Solution">
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email Template</label>
+          <div class="bg-gray-50 p-3 rounded-md mb-2 text-sm">
+            <p>Use these placeholders in your template:</p>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="bg-indigo-100 px-2 py-1 rounded text-xs font-mono">{name}</span>
+              <span class="bg-indigo-100 px-2 py-1 rounded text-xs font-mono">{company}</span>
+              <span class="bg-indigo-100 px-2 py-1 rounded text-xs font-mono">{title}</span>
+              <span class="bg-indigo-100 px-2 py-1 rounded text-xs font-mono">{insight}</span>
+            </div>
+          </div>
+          <textarea class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="8">Hi {name},
+
+I noticed that {company} is {insight}. Many teams like yours have found that the right project management tool can make a significant difference.
+
+Our solution helps teams like yours:
+• Reduce time spent in coordination meetings by 30%
+• Improve project visibility across teams
+• Automate repetitive workflows
+
+Would you be open to a quick 15-minute chat to see if we might be a good fit for {company}?
+
+Best regards,
+[Your Name]</textarea>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium hover:bg-gray-50 transition">
+              <i class="fas fa-eye mr-1"></i> Preview
+            </button>
+          </div>
+          <div>
+            <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+              <i class="fas fa-paper-plane mr-2"></i> Send Sequences
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sequence Preview -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-800">Sequence Preview</h2>
+          <div>
+            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+              <i class="fas fa-check-circle mr-1"></i> 3 Messages Ready
+            </span>
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-md p-4 mb-4">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <p class="font-medium">To: Sarah Johnson (sarah.j@techflow.io)</p>
+              <p class="text-gray-500 text-sm">Subject: Streamline Your Project Management with Our Solution</p>
+            </div>
+            <div>
+              <button class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-4 rounded">
+            <p>Hi Sarah,</p>
+            <p class="my-2">I noticed that TechFlow Solutions is growing team, manually tracking projects. Many teams like yours have found that the right project management tool can make a significant difference.</p>
+            <p class="my-2">Our solution helps teams like yours:</p>
+            <ul class="list-disc pl-5 my-2">
+              <li>Reduce time spent in coordination meetings by 30%</li>
+              <li>Improve project visibility across teams</li>
+              <li>Automate repetitive workflows</li>
+            </ul>
+            <p class="my-2">Would you be open to a quick 15-minute chat to see if we might be a good fit for TechFlow Solutions?</p>
+            <p class="mt-2">Best regards,<br>[Your Name]</p>
+          </div>
+        </div>
+
+        <div class="mt-4 text-right">
+          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-paper-plane mr-2"></i> Send All (3)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content">
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold mb-6 text-gray-800">Settings</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="font-semibold text-lg text-gray-700 mb-4">
+              <i class="fas fa-robot text-indigo-500 mr-2"></i> LLM Configuration
+            </h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Primary LLM Provider</label>
+                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option>Anthropic (Claude)</option>
+                  <option>OpenAI (GPT-4)</option>
+                  <option>Deepseek</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Model</label>
+                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option>claude-3-haiku-20240307</option>
+                  <option>claude-3-opus-20240229</option>
+                  <option>claude-3-sonnet-20240229</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">API Key</label>
+                <div class="relative">
+                  <input type="password" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="••••••••••••••••••••••">
+                  <button class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="font-semibold text-lg text-gray-700 mb-4">
+              <i class="fas fa-spider text-indigo-500 mr-2"></i> Scraping Configuration
+            </h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Web Scraping Method</label>
+                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option>Search Engines</option>
+                  <option>LinkedIn</option>
+                  <option>Company Websites</option>
+                  <option>All Methods</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Request Delay (seconds)</label>
+                <input type="number" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="2">
+              </div>
+              
+              <div class="flex items-center">
+                <input type="checkbox" id="use-proxies" class="form-checkbox h-5 w-5 text-indigo-600">
+                <label for="use-proxies" class="ml-2 text-gray-700">Use Proxies</label>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">Leads per Batch</label>
+                <input type="number" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="10">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <h3 class="font-semibold text-lg text-gray-700 mb-4">
+            <i class="fas fa-database text-indigo-500 mr-2"></i> Storage Options
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Data Export Format</label>
+              <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option>CSV</option>
+                <option>JSON</option>
+                <option>Excel (XLSX)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Output Directory</label>
+              <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="data">
+            </div>
+          </div>
