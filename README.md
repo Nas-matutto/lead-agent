@@ -1,2 +1,25 @@
-# lead-agent
-Repository for a Lead generation Agent that automates personalized sequences
+# Lead Agent
+
+An intelligent B2B lead generation tool powered by AI that helps you find and connect with your target audience.
+
+## Features
+
+- **Product Analysis**: Analyze your product/service to identify the ideal target audience
+- **Lead Generation**: Automatically find potential leads that match your target audience
+- **Personalized Outreach**: Create personalized outreach messages for each lead
+- **Flexible Integration**: Connect with various LLM providers (Anthropic, OpenAI, etc.)
+- **Web Interface**: User-friendly interface for managing the entire workflow
+
+## Installation
+
+### Prerequisites
+
+- Python 3.9+
+- Anthropic API key (and optionally OpenAI, Deepseek)
+
+### Setup
+
+1. Clone this repository:
+```bash
+git clone https://github.com/YOUR_USERNAME/lead-agent.git
+cd lead-agent

@@ -74,18 +74,18 @@ class AnthropicProvider(BaseLLMProvider):
         
         user_prompt = f"""
         Please analyze this product/service description and provide recommendations:
-        
+
         PRODUCT DESCRIPTION:
         {product_description}
-        
+
         Provide the following in JSON format:
-        1. Target audience (title, description, industry, company_size, role)
+        1. Target audience (title, description, industry, company_size, role, pain_point)
         2. Top 3-5 markets to focus on (name, description)
         3. 3-5 outreach strategies (name, description)
-        4. 10 search keywords to find potential leads
-        
-        Format your response as a valid JSON object with these keys: target_audience, markets, outreach_strategies, search_keywords
-        The target_audience should be an object with title, description, industry, company_size, and role fields.
+        4. 10 ideal locations to target (country/region, reason)
+
+        Format your response as a valid JSON object with these keys: target_audience, markets, outreach_strategies, ideal_locations
+        The target_audience should be an object with title, description, industry, company_size, role, and pain_point fields.
         Do not include any explanatory text before or after the JSON.
         """
         
@@ -122,6 +122,12 @@ class AnthropicProvider(BaseLLMProvider):
                 if field not in result["target_audience"]:
                     result["target_audience"][field] = ""
             
+            # Ensure ideal_locations exists
+            if "ideal_locations" not in result:
+                result["ideal_locations"] = []
+            elif not isinstance(result["ideal_locations"], list):
+                result["ideal_locations"] = []
+
             return result
         except json.JSONDecodeError:
             logger.error(f"Failed to parse JSON from response: {response}")

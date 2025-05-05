@@ -83,6 +83,14 @@ class BaseScraperFactory:
         # Import here to avoid circular imports
         from lead_agent.scraper.linkedin import LinkedInScraper
         from lead_agent.scraper.search_engines import SearchEngineScraper
+        from lead_agent.scraper.enhanced_scraper import EnhancedScraper
         
-        # For initial version, always use the search engine scraper
-        return SearchEngineScraper(config)
+        scraping_method = config.get("scraping_method", "enhanced")
+        
+        if scraping_method == "linkedin":
+            return LinkedInScraper(config)
+        elif scraping_method == "search_engines":
+            return SearchEngineScraper(config)
+        else:
+            # Default to the enhanced scraper
+            return EnhancedScraper(config)

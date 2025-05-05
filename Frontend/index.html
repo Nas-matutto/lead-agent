@@ -10,18 +10,15 @@
 </head>
 <body class="bg-gray-50 font-sans">
   <!-- Header -->
-  <header class="bg-gradient text-white shadow-md">
+  <header class="bg-gradient text-indigo-600 shadow-md">
     <div class="container mx-auto px-4 py-5 flex justify-between items-center">
       <div class="flex items-center">
-        <i class="fas fa-robot text-2xl mr-3"></i>
+        <i class="fas fa-robot text-indigo-600 text-2xl mr-3"></i>
         <h1 class="text-2xl font-bold">Lead Agent</h1>
       </div>
       <div>
         <button class="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
-          <i class="fas fa-plug mr-1"></i> API Keys
-        </button>
-        <button class="ml-3 bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
-          <i class="fas fa-question-circle mr-1"></i> Help
+          <i class="fas fa-user mr-1"></i> My Profile
         </button>
       </div>
     </div>
@@ -56,119 +53,114 @@
     </div>
 
     <!-- Product Analysis Tab -->
-    <div id="product-tab" class="tab-content active">
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6" id="product-form">
         <h2 class="text-xl font-bold mb-4 text-gray-800">What product or service are you selling?</h2>
         <p class="text-gray-600 mb-4">
           Describe your product or service in detail. The AI will analyze it and suggest the best target audience.
         </p>
-        <textarea class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" rows="5" placeholder="We sell a cloud-based project management software that helps teams track tasks, collaborate on documents, and automate workflows. It integrates with popular tools like Slack, Google Workspace, and Microsoft Office."></textarea>
+        <textarea id="product-description" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" rows="5" placeholder="We sell a cloud-based project management software that helps teams track tasks, collaborate on documents, and automate workflows. It integrates with popular tools like Slack, Google Workspace, and Microsoft Office."></textarea>
         <div class="flex justify-end">
-          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition btn-hover-effect">
+          <button id="analyze-button" class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
             <i class="fas fa-magic mr-2"></i> Analyze Product
           </button>
         </div>
       </div>
 
       <!-- Analysis Results (Initially Hidden) -->
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6" style="display: none;">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-gray-800">Analysis Results</h2>
-          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-            <i class="fas fa-check-circle mr-1"></i> Complete
-          </span>
+<div class="bg-white rounded-lg shadow-md p-6 mb-6" style="display: none;" id="analysis-results">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-gray-800">Analysis Results</h2>
+      <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+        <i class="fas fa-check-circle mr-1"></i> Complete
+      </span>
+    </div>
+    
+    <button class="mb-4 bg-gray-100 text-gray-700 px-3 py-1 rounded-md font-medium hover:bg-gray-200 transition" data-action="back">
+      <i class="fas fa-arrow-left mr-1"></i> Back
+    </button>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-semibold text-lg text-gray-700 mb-3">
+          <i class="fas fa-bullseye text-indigo-500 mr-2"></i> Target Audience
+        </h3>
+        <div class="bg-gray-50 p-4 rounded-md">
+          <h4 class="font-bold">Mid-sized Technology Companies</h4>
+          <p class="text-gray-600">
+            Companies with 50-500 employees that need to coordinate multiple projects 
+            across teams and are looking to streamline their workflow processes.
+          </p>
+          <div class="mt-3 grid grid-cols-2 gap-2">
+            <div class="bg-indigo-50 p-2 rounded">
+              <span class="text-xs text-gray-500">Industry</span>
+              <p class="font-medium">Technology</p>
+            </div>
+            <div class="bg-indigo-50 p-2 rounded">
+              <span class="text-xs text-gray-500">Company Size</span>
+              <p class="font-medium">50-500 employees</p>
+            </div>
+            <div class="bg-indigo-50 p-2 rounded">
+              <span class="text-xs text-gray-500">Role</span>
+              <p class="font-medium">Project Managers</p>
+            </div>
+            <div class="bg-indigo-50 p-2 rounded">
+              <span class="text-xs text-gray-500">Pain Point</span>
+              <p class="font-medium">Workflow Inefficiency</p>
+            </div>
+          </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 class="font-semibold text-lg text-gray-700 mb-3">
-              <i class="fas fa-bullseye text-indigo-500 mr-2"></i> Target Audience
-            </h3>
-            <div class="bg-gray-50 p-4 rounded-md">
-              <h4 class="font-bold">Mid-sized Technology Companies</h4>
-              <p class="text-gray-600">
-                Companies with 50-500 employees that need to coordinate multiple projects 
-                across teams and are looking to streamline their workflow processes.
-              </p>
-              <div class="mt-3 grid grid-cols-2 gap-2">
-                <div class="bg-indigo-50 p-2 rounded">
-                  <span class="text-xs text-gray-500">Industry</span>
-                  <p class="font-medium">Technology</p>
-                </div>
-                <div class="bg-indigo-50 p-2 rounded">
-                  <span class="text-xs text-gray-500">Company Size</span>
-                  <p class="font-medium">50-500 employees</p>
-                </div>
-                <div class="bg-indigo-50 p-2 rounded">
-                  <span class="text-xs text-gray-500">Role</span>
-                  <p class="font-medium">Project Managers</p>
-                </div>
-                <div class="bg-indigo-50 p-2 rounded">
-                  <span class="text-xs text-gray-500">Pain Point</span>
-                  <p class="font-medium">Workflow Inefficiency</p>
-                </div>
+      </div>
+  
+      <div>
+        <h3 class="font-semibold text-lg text-gray-700 mb-3">
+          <i class="fas fa-globe text-indigo-500 mr-2"></i> Recommended Markets
+        </h3>
+        <div class="bg-gray-50 p-4 rounded-md">
+          <ul class="space-y-3">
+            <li class="flex">
+              <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">1</span>
+              <div>
+                <h4 class="font-bold">Software Development Companies</h4>
+                <p class="text-gray-600 text-sm">Focus on development teams that need to coordinate tasks.</p>
               </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="font-semibold text-lg text-gray-700 mb-3">
-              <i class="fas fa-globe text-indigo-500 mr-2"></i> Recommended Markets
-            </h3>
-            <div class="bg-gray-50 p-4 rounded-md">
-              <ul class="space-y-3">
-                <li class="flex">
-                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">1</span>
-                  <div>
-                    <h4 class="font-bold">Software Development Companies</h4>
-                    <p class="text-gray-600 text-sm">Focus on development teams that need to coordinate tasks.</p>
-                  </div>
-                </li>
-                <li class="flex">
-                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">2</span>
-                  <div>
-                    <h4 class="font-bold">Marketing Agencies</h4>
-                    <p class="text-gray-600 text-sm">Agencies managing multiple client projects simultaneously.</p>
-                  </div>
-                </li>
-                <li class="flex">
-                  <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">3</span>
-                  <div>
-                    <h4 class="font-bold">E-commerce Businesses</h4>
-                    <p class="text-gray-600 text-sm">Businesses coordinating product launches and marketing.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-6">
-          <h3 class="font-semibold text-lg text-gray-700 mb-3">
-            <i class="fas fa-search text-indigo-500 mr-2"></i> Search Keywords
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">project management software</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">workflow automation tools</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">tech company productivity</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">team collaboration platform</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">task tracking software</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">software development project management</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">marketing agency project tools</span>
-            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">slack integration project management</span>
-          </div>
-        </div>
-
-        <div class="mt-6 flex justify-end">
-          <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition btn-hover-effect">
-            <i class="fas fa-users mr-2"></i> Generate Leads
-          </button>
+            </li>
+            <li class="flex">
+              <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">2</span>
+              <div>
+                <h4 class="font-bold">Marketing Agencies</h4>
+                <p class="text-gray-600 text-sm">Agencies managing multiple client projects simultaneously.</p>
+              </div>
+            </li>
+            <li class="flex">
+              <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">3</span>
+              <div>
+                <h4 class="font-bold">E-commerce Businesses</h4>
+                <p class="text-gray-600 text-sm">Businesses coordinating product launches and marketing.</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
+  
+    <div class="mt-6">
+      <h3 class="font-semibold text-lg text-gray-700 mb-3">
+        <i class="fas fa-globe text-indigo-500 mr-2"></i> Ideal Locations to Target
+      </h3>
+      <div class="flex flex-col space-y-2">
+        <!-- Locations will be added here by JavaScript -->
+      </div>
+    </div>
+  
+    <div class="mt-6 flex justify-end">
+      <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition" data-action="generate">
+        <i class="fas fa-users mr-2"></i> Generate Leads
+      </button>
+    </div>
+  </div>
 
     <!-- Lead Generation Tab -->
-    <div id="leads-tab" class="tab-content">
+    <div id="leads-tab" class="tab-content" style="display: none;">
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold text-gray-800">Lead Generation</h2>
@@ -290,7 +282,7 @@
     </div>
 
     <!-- Sequences Tab -->
-    <div id="sequence-tab" class="tab-content">
+    <div id="sequence-tab" class="tab-content" style="display: none;">
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-xl font-bold text-gray-800">Create Outreach Sequence</h2>
@@ -416,7 +408,7 @@ Best regards,
     </div>
 
     <!-- Settings Tab -->
-    <div id="settings-tab" class="tab-content">
+    <div id="settings-tab" class="tab-content" style="display: none;">
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-bold mb-6 text-gray-800">Settings</h2>
         
@@ -552,6 +544,6 @@ Best regards,
         </div>
       </footer>
     
-      <script src="js/app.js"></script>
+      <script src="js/simplified.js"></script>
     </body>
     </html>
