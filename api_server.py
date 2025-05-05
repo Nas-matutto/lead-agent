@@ -4,25 +4,44 @@ Simple API server for Lead Agent.
 import os
 import json
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
 
 from lead_agent.orchestrator import LeadAgentOrchestrator
 from lead_agent.llm.anthropic import AnthropicProvider
 from lead_agent.config import get_config
+from lead_agent.api.email_routes import email_bp
+from lead_agent.tasks.email_processor import EmailProcessor
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend')
+app.secret_key = os.getenv("FLASK_SECRET_KEY", os.urandom(24))  # Required for sessions
 CORS(app)  # Enable CORS for all routes
 
 # Initialize Lead Agent
 config = get_config()
 llm_provider = AnthropicProvider(config["llm"]["anthropic"])
 orchestrator = LeadAgentOrchestrator(llm_provider=llm_provider)
+
+# Register blueprints
+app.register_blueprint(email_bp)
+
+# Start email processor
+email_processor = EmailProcessor()
+email_processor.start()
+
+# Serve frontend files
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_frontend(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/')
 def home():
@@ -121,3 +140,13 @@ def update_settings():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+
+# Cleanup when shutting down
+@app.teardown_appcontext
+def shutdown_email_processor(exception=None):
+    if email_processor and email_processor.is_alive():
+        email_processor.stop()
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)

@@ -408,111 +408,193 @@ Best regards,
     </div>
 
     <!-- Settings Tab -->
-    <div id="settings-tab" class="tab-content" style="display: none;">
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 class="text-xl font-bold mb-6 text-gray-800">Settings</h2>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold mb-6 text-gray-800">Connect Your Email</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 class="font-semibold text-lg text-gray-700 mb-4">
-              <i class="fas fa-robot text-indigo-500 mr-2"></i> LLM Configuration
-            </h3>
-            
-            <div class="space-y-4">
-              <div>
-                <label class="block text-gray-700 font-medium mb-2">Primary LLM Provider</label>
-                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option>Anthropic (Claude)</option>
-                  <option>OpenAI (GPT-4)</option>
-                  <option>Deepseek</option>
-                </select>
+        <div class="mb-8">
+          <p class="text-gray-600 mb-4">
+            Connect your email account to send personalized sequences directly from your inbox. Your credentials are securely stored and only used for sending emails you approve.
+          </p>
+          
+          <div class="bg-blue-50 p-4 rounded-md mb-6">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
               </div>
-              
-              <div>
-                <label class="block text-gray-700 font-medium mb-2">Model</label>
-                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option>claude-3-haiku-20240307</option>
-                  <option>claude-3-opus-20240229</option>
-                  <option>claude-3-sonnet-20240229</option>
-                </select>
-              </div>
-              
-              <div>
-                <label class="block text-gray-700 font-medium mb-2">API Key</label>
-                <div class="relative">
-                  <input type="password" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="••••••••••••••••••••••">
-                  <button class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-eye"></i>
-                  </button>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">Why connect your email?</h3>
+                <div class="mt-2 text-sm text-blue-700">
+                  <p>Emails sent from your own account have higher deliverability and response rates. Recipients are more likely to engage with personalized messages coming directly from you rather than a third-party system.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="border-b border-gray-200 pb-5 mb-5">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">Email Provider</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="border border-gray-200 rounded-md p-4 hover:border-indigo-500 cursor-pointer transition-colors email-provider active" data-provider="gmail">
+              <div class="flex justify-center items-center mb-3">
+                <i class="fab fa-google text-4xl text-red-500"></i>
+              </div>
+              <p class="text-center font-medium">Gmail / Google Workspace</p>
+            </div>
+            <div class="border border-gray-200 rounded-md p-4 hover:border-indigo-500 cursor-pointer transition-colors email-provider" data-provider="outlook">
+              <div class="flex justify-center items-center mb-3">
+                <i class="fab fa-microsoft text-4xl text-blue-500"></i>
+              </div>
+              <p class="text-center font-medium">Outlook / Office 365</p>
+            </div>
+            <div class="border border-gray-200 rounded-md p-4 hover:border-indigo-500 cursor-pointer transition-colors email-provider" data-provider="other">
+              <div class="flex justify-center items-center mb-3">
+                <i class="fas fa-envelope text-4xl text-gray-500"></i>
+              </div>
+              <p class="text-center font-medium">Other SMTP Provider</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Gmail Connection Form -->
+        <div id="gmail-form" class="email-form">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">Connect Gmail Account</h3>
+          <p class="text-gray-600 mb-4">
+            You'll be redirected to Google to authorize access to your account. We only request permissions needed to send emails on your behalf.
+          </p>
+          <button id="connect-gmail" class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fab fa-google mr-2"></i> Connect with Google
+          </button>
+        </div>
+        
+        <!-- Outlook Connection Form -->
+        <div id="outlook-form" class="email-form hidden">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">Connect Outlook Account</h3>
+          <p class="text-gray-600 mb-4">
+            You'll be redirected to Microsoft to authorize access to your account. We only request permissions needed to send emails on your behalf.
+          </p>
+          <button id="connect-outlook" class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fab fa-microsoft mr-2"></i> Connect with Microsoft
+          </button>
+        </div>
+        
+        <!-- SMTP Connection Form -->
+        <div id="other-form" class="email-form hidden">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">Connect SMTP Email</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 font-medium mb-2" for="smtp-email">Email Address</label>
+              <input type="email" id="smtp-email" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="your.email@example.com">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium mb-2" for="smtp-password">Password or App Password</label>
+              <input type="password" id="smtp-password" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="••••••••••••">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium mb-2" for="smtp-server">SMTP Server</label>
+              <input type="text" id="smtp-server" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="smtp.example.com">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium mb-2" for="smtp-port">Port</label>
+              <input type="number" id="smtp-port" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="587" value="587">
+            </div>
+          </div>
+          <div class="flex items-center mb-4">
+            <input type="checkbox" id="smtp-ssl" class="form-checkbox h-5 w-5 text-indigo-600">
+            <label for="smtp-ssl" class="ml-2 text-gray-700">Use SSL/TLS</label>
+          </div>
+          <button id="connect-smtp" class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-plug mr-2"></i> Connect Email Account
+          </button>
+        </div>
+        
+        <!-- Email Connection Status (initially hidden) -->
+        <div id="email-connected" class="hidden mt-6 bg-green-50 p-4 rounded-md">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-check-circle text-green-400 text-xl"></i>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-green-800">Email connected successfully</h3>
+              <div class="mt-2 text-sm text-green-700">
+                <p id="connected-email-info">Your email account (you@example.com) is now connected. All sequences will be sent from this address.</p>
+              </div>
+              <div class="mt-2">
+                <button id="disconnect-email" class="text-sm text-red-600 hover:text-red-500 font-medium">
+                  Disconnect account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Email Sequence Settings (only visible when email is connected) -->
+        <div id="sequence-settings" class="hidden mt-8 pt-6 border-t border-gray-200">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">Email Sequence Settings</h3>
+          
+          <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Default Send Time</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <select id="sequence-time" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="9">9:00 AM</option>
+                  <option value="10">10:00 AM</option>
+                  <option value="11">11:00 AM</option>
+                  <option value="12">12:00 PM</option>
+                  <option value="13">1:00 PM</option>
+                  <option value="14">2:00 PM</option>
+                  <option value="15">3:00 PM</option>
+                  <option value="16">4:00 PM</option>
+                </select>
+              </div>
+              <div>
+                <select id="sequence-timezone" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="America/New_York">Eastern Time (ET)</option>
+                  <option value="America/Chicago">Central Time (CT)</option>
+                  <option value="America/Denver">Mountain Time (MT)</option>
+                  <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                  <option value="Europe/London">London (GMT)</option>
+                  <option value="Europe/Paris">Paris (CET)</option>
+                  <option value="Asia/Dubai">Dubai (GST)</option>
+                  <option value="Asia/Singapore">Singapore (SGT)</option>
+                </select>
               </div>
             </div>
           </div>
           
-          <div>
-            <h3 class="font-semibold text-lg text-gray-700 mb-4">
-              <i class="fas fa-spider text-indigo-500 mr-2"></i> Scraping Configuration
-            </h3>
-            
-            <div class="space-y-4">
+          <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Follow-up Sequence</label>
+            <div class="flex items-center mb-2">
+              <input type="checkbox" id="auto-followup" class="form-checkbox h-5 w-5 text-indigo-600">
+              <label for="auto-followup" class="ml-2 text-gray-700">Automatically send follow-up emails</label>
+            </div>
+            <div id="followup-options" class="pl-7 mt-3">
+              <div class="mb-3">
+                <label class="block text-gray-700 text-sm mb-1">Wait time before first follow-up</label>
+                <select id="followup-delay" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="3">3 days</option>
+                  <option value="5">5 days</option>
+                  <option value="7">1 week</option>
+                  <option value="14">2 weeks</option>
+                </select>
+              </div>
               <div>
-                <label class="block text-gray-700 font-medium mb-2">Web Scraping Method</label>
-                <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-in <label class="block text-gray-700 font-medium mb-2">Web Scraping Method</label>
-                    <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                      <option>Search Engines</option>
-                      <option>LinkedIn</option>
-                      <option>Company Websites</option>
-                      <option>All Methods</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label class="block text-gray-700 font-medium mb-2">Request Delay (seconds)</label>
-                    <input type="number" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="2">
-                  </div>
-                  
-                  <div class="flex items-center">
-                    <input type="checkbox" id="use-proxies" class="form-checkbox h-5 w-5 text-indigo-600">
-                    <label for="use-proxies" class="ml-2 text-gray-700">Use Proxies</label>
-                  </div>
-                  
-                  <div>
-                    <label class="block text-gray-700 font-medium mb-2">Leads per Batch</label>
-                    <input type="number" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="10">
-                  </div>
-                </div>
+                <label class="block text-gray-700 text-sm mb-1">Maximum number of follow-ups</label>
+                <select id="followup-count" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="1">1 follow-up</option>
+                  <option value="2">2 follow-ups</option>
+                  <option value="3">3 follow-ups</option>
+                </select>
               </div>
-            </div>
-            
-            <div class="mt-6">
-              <h3 class="font-semibold text-lg text-gray-700 mb-4">
-                <i class="fas fa-database text-indigo-500 mr-2"></i> Storage Options
-              </h3>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-gray-700 font-medium mb-2">Data Export Format</label>
-                  <select class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option>CSV</option>
-                    <option>JSON</option>
-                    <option>Excel (XLSX)</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label class="block text-gray-700 font-medium mb-2">Output Directory</label>
-                  <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="data">
-                </div>
-              </div>
-            </div>
-            
-            <div class="mt-6 flex justify-end">
-              <button class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition btn-hover-effect">
-                <i class="fas fa-save mr-2"></i> Save Settings
-              </button>
             </div>
           </div>
+          
+          <div class="flex justify-end">
+            <button id="save-settings" class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 transition">
+              <i class="fas fa-save mr-2"></i> Save Settings
+            </button>
+          </div>
         </div>
+      </div>
       </main>
     
       <!-- Footer -->
@@ -545,5 +627,7 @@ Best regards,
       </footer>
     
       <script src="js/simplified.js"></script>
+      <script src="js/simplified.js"></script>
+      <script src="js/email-settings.js"></script>
     </body>
     </html>
