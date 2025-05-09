@@ -28,7 +28,7 @@ class LeadAgentOrchestrator:
             return
             
         # Import components here to avoid circular imports
-        from lead_agent.scraper.base import BaseScraperFactory
+        from lead_agent.scraper.scraper_factory import create_scraper
         from lead_agent.processor.cleaner import DataProcessor
         from lead_agent.storage.exporter import DataExporter
         
@@ -37,7 +37,7 @@ class LeadAgentOrchestrator:
             from lead_agent.llm.base import get_default_llm_provider
             self.llm_provider = get_default_llm_provider()
             
-        self._scraper = BaseScraperFactory.create_scraper(self.config["scraping"])
+        self._scraper = create_scraper(self.config["scraping"])
         self._processor = DataProcessor(self.config["app"])
         self._storage = DataExporter(self.config["storage"])
         

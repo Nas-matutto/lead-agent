@@ -339,8 +339,25 @@ function updateSelectedLeadsDisplay(leads) {
         });
     }
 });
+    
 
-// Helper Functions
+    // Add select all functionality
+    const selectAllCheckbox = document.getElementById('select-all-leads');
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+    const allCheckboxes = document.querySelectorAll('#leads-tab table input[type="checkbox"]');
+        allCheckboxes.forEach(checkbox => {
+      checkbox.checked = selectAllCheckbox.checked;
+    });
+    
+    // Update count in the footer
+    const countDisplay = document.querySelector('#leads-tab .text-gray-600');
+    const totalLeads = allCheckboxes.length - 1; // Subtract 1 for the header checkbox
+    const selectedLeads = selectAllCheckbox.checked ? totalLeads : 0;
+    countDisplay.textContent = `Selected ${selectedLeads} of ${totalLeads} leads`;
+  });
+}
+    // Helper Functions
 
     function updateAnalysisResults(analysis) {
         console.log("Updating analysis results with:", analysis);
@@ -626,4 +643,130 @@ async function updateSettings(settings) {
         throw error;
     }
 }
+
+// Add functionality to lead action buttons
+function setupLeadActionButtons() {
+    // View lead buttons
+    const viewButtons = document.querySelectorAll('.view-lead-btn');
+    viewButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const row = this.closest('tr');
+        const leadId = row.getAttribute('data-id');
+        viewLeadDetails(leadId);
+      });
+    });
+    
+    // Email lead buttons
+    const emailButtons = document.querySelectorAll('.email-lead-btn');
+    emailButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const row = this.closest('tr');
+        const leadId = row.getAttribute('data-id');
+        
+        // Set the checkbox to checked
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        checkbox.checked = true;
+        
+        // Switch to sequence tab and pre-select this lead
+        document.querySelector('.tab-link[data-tab="sequence"]').click();
+        
+        // Get the lead data and update selected leads display
+        const lead = {
+          id: leadId,
+          name: row.cells[1].textContent,
+          company: row.cells[2].textContent,
+          title: row.cells[3].textContent,
+          email: row.cells[4].textContent,
+          insight: row.cells[5].textContent
+        };
+        
+        updateSelectedLeadsDisplay([lead]);
+      });
+    });
+  }
+  
+  // View lead details
+  function viewLeadDetails(leadId) {
+    // Find the lead data
+    const row = document.querySelector(`tr[data-id="${leadId}"]`);
+    if (!row) return;
+    
+    const lead = {
+      id: leadId,
+      name: row.cells[1].textContent,
+      company: row.cells[2].textContent,
+      title: row.cells[3].textContent,
+      email: row.cells[4].textContent,
+      insight: row.cells[5].textContent
+    };
+    
+    // Create modal to display lead details
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+    modal.innerHTML = `
+      <div class="fixed inset-0 bg-black opacity-50"></div>
+      <div class="bg-white rounded-lg p-8 max-w-lg w-full relative z-10">
+        <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2 class="text-2xl font-bold mb-4">${lead.name}</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="border-b pb-2">
+            <label class="font-medium text-gray-700">Company:</label>
+            <p>${lead.company}</p>
+          </div>
+          <div class="border-b pb-2">
+            <label class="font-medium text-gray-700">Title:</label>
+            <p>${lead.title}</p>
+          </div>
+          <div class="border-b pb-2">
+            <label class="font-medium text-gray-700">Email:</label>
+            <p>${lead.email}</p>
+          </div>
+          <div class="border-b pb-2">
+            <label class="font-medium text-gray-700">Insight:</label>
+            <p>${lead.insight}</p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition">
+            <i class="fas fa-envelope mr-2"></i> Send Message
+          </button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add close button functionality
+    const closeButton = modal.querySelector('button');
+    closeButton.addEventListener('click', function() {
+      document.body.removeChild(modal);
+    });
+    
+    // Add send message button functionality
+    const sendButton = modal.querySelector('.bg-indigo-600');
+    sendButton.addEventListener('click', function() {
+      document.body.removeChild(modal);
+      
+      // Switch to sequence tab and pre-select this lead
+      document.querySelector('.tab-link[data-tab="sequence"]').click();
+      
+      // Update selected leads display
+      updateSelectedLeadsDisplay([lead]);
+    });
+  }
+  
+  // Call this function after loading the leads
+  document.addEventListener('DOMContentLoaded', function() {
+    // Other initialization code...
+    
+    // Check if we're on the leads tab
+    const leadsTab = document.getElementById('leads-tab');
+    if (leadsTab) {
+      setupLeadActionButtons();
+    }
+  });
 

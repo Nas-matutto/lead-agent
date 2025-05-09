@@ -37,6 +37,12 @@ SCRAPING_CONFIG = {
     "use_proxies": bool(os.getenv("USE_PROXIES", "False").lower() == "true"),
     "proxy_list": os.getenv("PROXY_LIST", "").split(",") if os.getenv("PROXY_LIST") else [],
     "scraping_method": os.getenv("SCRAPING_METHOD", "enhanced"),
+    "apify": {
+    "enabled": bool(os.getenv("APIFY_ENABLED", "False").lower() == "true"),
+    "api_key": os.getenv("APIFY_API_KEY", ""),
+    "linkedin_actor_id": os.getenv("APIFY_LINKEDIN_ACTOR_ID", "apify/linkedin-scraper"),
+    "website_actor_id": os.getenv("APIFY_WEBSITE_ACTOR_ID", "apify/website-content-crawler"),
+    }
 }
 
 # Data storage configuration

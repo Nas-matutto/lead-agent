@@ -12,7 +12,8 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from lead_agent.scraper.base import BaseScraper
+from lead_agent.scraper.scraper_types import BaseScraper
+from lead_agent.scraper.base import get_headers, get_proxy
 
 logger = logging.getLogger(__name__)
 

@@ -4,11 +4,13 @@ LinkedIn scraper for Lead Agent.
 import logging
 from typing import Dict, List, Any
 
-from lead_agent.scraper.base import BaseScraper
+from lead_agent.scraper.scraper_types import BaseScraper
+from lead_agent.scraper.base import get_headers, get_proxy
 
 logger = logging.getLogger(__name__)
 
 class LinkedInScraper(BaseScraper):
+    
     """Scraper for LinkedIn contacts."""
     
     def __init__(self, config: Dict[str, Any]):

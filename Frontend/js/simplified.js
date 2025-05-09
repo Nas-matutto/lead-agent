@@ -1,5 +1,5 @@
 // API URL - Change this to match your server
-const API_URL = 'http://127.0.0.1:8080/api';
+const API_URL = '/api';
 
 // Simple helper for logging
 function log(message, data) {
@@ -11,44 +11,43 @@ document.addEventListener('DOMContentLoaded', function() {
   log('Page loaded, setting up handlers');
   
   // Setup tab switching
-const tabLinks = document.querySelectorAll('.tab-link');
-const tabContents = document.querySelectorAll('.tab-content');
+  const tabLinks = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-tabLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    e.preventDefault();
-    
-    // Remove active class from all tabs
-    tabLinks.forEach(tab => tab.classList.remove('active', 'border-indigo-500', 'text-indigo-600'));
-    tabLinks.forEach(tab => tab.classList.add('border-transparent', 'text-gray-500'));
-    
-    // Add active class to current tab
-    this.classList.add('active', 'border-indigo-500', 'text-indigo-600');
-    this.classList.remove('border-transparent', 'text-gray-500');
-    
-    // Hide all tab contents
-    tabContents.forEach(content => {
-      content.style.display = 'none';
+  tabLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Remove active class from all tabs
+      tabLinks.forEach(tab => tab.classList.remove('active', 'border-indigo-500', 'text-indigo-600'));
+      tabLinks.forEach(tab => tab.classList.add('border-transparent', 'text-gray-500'));
+      
+      // Add active class to current tab
+      this.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+      this.classList.remove('border-transparent', 'text-gray-500');
+      
+      // Hide all tab contents
+      tabContents.forEach(content => {
+        if (content) {
+          content.style.display = 'none';
+        }
+      });
+      
+      // Show current tab content
+      const tabName = this.getAttribute('data-tab');
+      const tabContent = document.getElementById(tabName + '-tab');
+      if (tabContent) {
+        tabContent.style.display = 'block';
+      }
     });
-    
-    // Show current tab content
-    const tabName = this.getAttribute('data-tab');
-    const tabContent = document.getElementById(tabName + '-tab');
-    if (tabContent) {
-      tabContent.style.display = 'block';
-    }
   });
-});
 
-// Make sure only the product tab is visible initially
-document.addEventListener('DOMContentLoaded', function() {
-  // Hide all tabs except product tab
+  // Make sure only the product tab is visible initially
   tabContents.forEach(content => {
-    if (content.id !== 'product-tab') {
+    if (content && content.id !== 'product-tab') {
       content.style.display = 'none';
     }
   });
-});
   
   // 1. Product Analysis Button
   const analyzeButton = document.getElementById('analyze-button');
@@ -94,7 +93,10 @@ document.addEventListener('DOMContentLoaded', function() {
         log('API returned data', data);
         
         // Hide product form
-        document.getElementById('product-form').style.display = 'none';
+        const productForm = document.getElementById('product-form');
+        if (productForm) {
+          productForm.style.display = 'none';
+        }
         
         // Show analysis results
         const resultsSection = document.getElementById('analysis-results');
@@ -125,33 +127,133 @@ document.addEventListener('DOMContentLoaded', function() {
   if (backButton) {
     backButton.addEventListener('click', function() {
       // Hide analysis results
-      document.getElementById('analysis-results').style.display = 'none';
+      const resultsSection = document.getElementById('analysis-results');
+      if (resultsSection) {
+        resultsSection.style.display = 'none';
+      }
       
       // Show product form
-      document.getElementById('product-form').style.display = 'block';
+      const productForm = document.getElementById('product-form');
+      if (productForm) {
+        productForm.style.display = 'block';
+      }
     });
   }
   
+  // 2. Generate Leads Button
   const generateLeadsButton = document.querySelector('#analysis-results button[data-action="generate"]');
-if (generateLeadsButton) {
-  generateLeadsButton.addEventListener('click', function() {
-    // Hide product tab content
-    document.getElementById('product-tab').style.display = 'none';
-    
-    // Show leads tab content
-    document.getElementById('leads-tab').style.display = 'block';
-    
-    // Update the active tab indicator
-    document.querySelectorAll('.tab-link').forEach(tab => {
-      tab.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
-      tab.classList.add('border-transparent', 'text-gray-500');
+  if (generateLeadsButton) {
+    generateLeadsButton.addEventListener('click', function() {
+      log('Generate Leads button clicked');
+      
+      // Get the target audience from the analysis results
+      const targetAudienceHeading = document.querySelector('#analysis-results .bg-gray-50 h4');
+      const targetAudienceDesc = document.querySelector('#analysis-results .bg-gray-50 p');
+      
+      if (!targetAudienceHeading || !targetAudienceDesc) {
+        alert('Could not find target audience data');
+        return;
+      }
+      
+      const targetAudience = {
+        title: targetAudienceHeading.textContent,
+        description: targetAudienceDesc.textContent
+      };
+      
+      log('Target audience:', targetAudience);
+      
+      // Show loading state
+      generateLeadsButton.disabled = true;
+      generateLeadsButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+      
+      // Call the API to find leads
+      fetch(`${API_URL}/find-leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ target_audience: targetAudience, count: 10 })
+      })
+      .then(response => {
+        log('API response status:', response.status);
+        if (!response.ok) {
+          throw new Error(`API returned status ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(leads => {
+        log('Received leads:', leads);
+
+        if (!Array.isArray(leads)) {
+            console.error("API returned non-array response:", leads);
+            // Convert to array if possible
+            if (leads && typeof leads === 'object') {
+              leads = [leads];
+            } else {
+              leads = [];
+            }
+          }
+        
+        try {
+          // Try to update tab display safely
+          const tabs = document.querySelectorAll('.tab-content');
+          if (tabs.length > 0) {
+            // Hide all tabs
+            tabs.forEach(tab => {
+              if (tab) tab.style.display = 'none';
+            });
+          }
+          
+          // Try to show leads tab
+          const leadsTab = document.getElementById('leads-tab');
+          if (leadsTab) {
+            leadsTab.style.display = 'block';
+          } else {
+            console.error("Could not find leads-tab element");
+          }
+          
+          // Update active tab indicator
+          const tabLinks = document.querySelectorAll('.tab-link');
+          if (tabLinks.length > 0) {
+            // Remove active class from all tabs
+            tabLinks.forEach(tab => {
+              if (tab) {
+                tab.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
+                tab.classList.add('border-transparent', 'text-gray-500');
+              }
+            });
+            
+            // Add active class to leads tab
+            const leadsTabLink = document.querySelector('.tab-link[data-tab="leads"]');
+            if (leadsTabLink) {
+              leadsTabLink.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+              leadsTabLink.classList.remove('border-transparent', 'text-gray-500');
+            } else {
+              console.error("Could not find leads tab link");
+            }
+          }
+          
+          // Update the leads table with the results
+          updateLeadsTable(leads);
+        } catch (error) {
+          console.error("Error updating UI:", error);
+          alert("Error updating UI. Please check the console for details.");
+        }
+      })
+      .catch(error => {
+        console.error("Error finding leads:", error);
+        alert(`Error finding leads: ${error.message}`);
+      })
+      .finally(() => {
+        // Reset button state
+        generateLeadsButton.disabled = false;
+        generateLeadsButton.innerHTML = '<i class="fas fa-users mr-2"></i> Generate Leads';
+      });
     });
-    
-    const leadsTabLink = document.querySelector('.tab-link[data-tab="leads"]');
-    leadsTabLink.classList.add('active', 'border-indigo-500', 'text-indigo-600');
-    leadsTabLink.classList.remove('border-transparent', 'text-gray-500');
-  });
-}
+  }
+  
+  // Set up select all checkbox functionality
+  setupSelectAllCheckbox();
 });
 
 // Function to update analysis results
@@ -193,21 +295,147 @@ function updateAnalysisResults(container, data) {
       });
     }
     
-    // Locations
+    // Locations or Keywords
     const locationsContainer = container.querySelector('div.mt-6 > div.flex.flex-col');
-    if (locationsContainer && data.ideal_locations && data.ideal_locations.length > 0) {
+    if (locationsContainer) {
       locationsContainer.innerHTML = '';
       
-      data.ideal_locations.slice(0, 10).forEach(location => {
-        locationsContainer.innerHTML += `
-          <div class="bg-gray-100 p-2 rounded-md">
-            <span class="font-medium">${location.country_region || 'Location'}</span>
-            <p class="text-sm text-gray-600">${location.reason || 'No reason provided'}</p>
-          </div>
-        `;
-      });
+      if (data.ideal_locations && data.ideal_locations.length > 0) {
+        data.ideal_locations.slice(0, 10).forEach(location => {
+          locationsContainer.innerHTML += `
+            <div class="bg-gray-100 p-2 rounded-md">
+              <span class="font-medium">${location.country_region || 'Location'}</span>
+              <p class="text-sm text-gray-600">${location.reason || 'No reason provided'}</p>
+            </div>
+          `;
+        });
+      } else if (data.search_keywords && data.search_keywords.length > 0) {
+        // If no locations, show keywords instead
+        data.search_keywords.slice(0, 10).forEach(keyword => {
+          locationsContainer.innerHTML += `
+            <div class="bg-gray-100 p-2 rounded-md">
+              <span class="font-medium">${keyword}</span>
+            </div>
+          `;
+        });
+      }
     }
   } catch (error) {
     console.error('Error updating analysis results:', error);
   }
+}
+
+// Function to update leads table
+function updateLeadsTable(leads) {
+  const leadsTable = document.querySelector('#leads-tab table tbody');
+  if (!leadsTable) {
+    console.error("Could not find leads table");
+    return;
+  }
+  
+  // Clear existing rows
+  leadsTable.innerHTML = '';
+  
+  // Check if leads is empty or not an array
+  if (!leads || !Array.isArray(leads) || leads.length === 0) {
+    leadsTable.innerHTML = `
+      <tr>
+        <td colspan="7" class="py-4 text-center text-gray-500">No leads found</td>
+      </tr>
+    `;
+    return;
+  }
+  
+  // Add new rows
+  leads.forEach(lead => {
+    leadsTable.innerHTML += `
+      <tr class="border-b border-gray-200 hover:bg-gray-50" data-id="${lead.id || ''}">
+        <td class="py-3 px-4 text-left">
+          <input type="checkbox" class="form-checkbox h-4 w-4 text-indigo-600" data-id="${lead.id || ''}">
+        </td>
+        <td class="py-3 px-4 text-left">${lead.name || 'N/A'}</td>
+        <td class="py-3 px-4 text-left">${lead.company || 'N/A'}</td>
+        <td class="py-3 px-4 text-left">${lead.title || 'N/A'}</td>
+        <td class="py-3 px-4 text-left">${lead.email || 'N/A'}</td>
+        <td class="py-3 px-4 text-left">${lead.insight || 'No insight available'}</td>
+        <td class="py-3 px-4 text-center">
+          <button class="view-lead-btn text-blue-500 hover:text-blue-700 mr-2 p-1 rounded hover:bg-blue-100 transition">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="email-lead-btn text-green-500 hover:text-green-700 p-1 rounded hover:bg-green-100 transition">
+            <i class="fas fa-envelope"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+  
+  // Update count
+  const countDisplay = document.querySelector('#leads-tab .text-gray-600');
+  if (countDisplay) {
+    countDisplay.textContent = `Showing ${leads.length} of ${leads.length} leads`;
+  }
+  
+  // Set up lead action buttons
+  setupLeadActionButtons();
+}
+
+// Set up select all checkbox functionality
+function setupSelectAllCheckbox() {
+  const selectAllCheckbox = document.getElementById('select-all-leads');
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', function() {
+      const allCheckboxes = document.querySelectorAll('#leads-tab table tbody input[type="checkbox"]');
+      allCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+      });
+    });
+  }
+}
+
+// Set up lead action buttons
+function setupLeadActionButtons() {
+  // View lead buttons
+  const viewButtons = document.querySelectorAll('.view-lead-btn');
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const row = this.closest('tr');
+      const leadId = row.getAttribute('data-id');
+      
+      // Get lead data from the row
+      const lead = {
+        id: leadId,
+        name: row.cells[1].textContent,
+        company: row.cells[2].textContent,
+        title: row.cells[3].textContent,
+        email: row.cells[4].textContent,
+        insight: row.cells[5].textContent
+      };
+      
+      // Show lead details in an alert (for now)
+      alert(`Lead Details:\nName: ${lead.name}\nCompany: ${lead.company}\nTitle: ${lead.title}\nEmail: ${lead.email}\nInsight: ${lead.insight}`);
+    });
+  });
+  
+  // Email lead buttons
+  const emailButtons = document.querySelectorAll('.email-lead-btn');
+  emailButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const row = this.closest('tr');
+      
+      // Check the checkbox for this row
+      const checkbox = row.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+      
+      // Switch to sequence tab
+      const sequenceTabLink = document.querySelector('.tab-link[data-tab="sequence"]');
+      if (sequenceTabLink) {
+        sequenceTabLink.click();
+      }
+    });
+  });
 }
