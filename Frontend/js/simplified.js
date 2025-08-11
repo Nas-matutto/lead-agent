@@ -282,7 +282,15 @@ function updateAnalysisResults(container, data) {
     if (marketsList && data.markets && data.markets.length > 0) {
       marketsList.innerHTML = '';
       
-      data.markets.slice(0, 3).forEach((market, index) => {
+      // Filter to ensure only industry-related markets
+      const filteredMarkets = data.markets.filter(market => 
+        market.name && 
+        !market.name.includes(',') && // Filter out location-like entries with commas
+        !/^\d+%/.test(market.name) && // Filter out percentage-based entries
+        !/^[A-Z]{2}$/.test(market.name) // Filter out 2-letter country codes
+      );
+      
+      filteredMarkets.slice(0, 3).forEach((market, index) => {
         marketsList.innerHTML += `
           <li class="flex">
             <span class="bg-indigo-100 text-indigo-800 rounded-full h-6 w-6 flex items-center justify-center font-semibold mr-2">${index + 1}</span>
@@ -300,21 +308,40 @@ function updateAnalysisResults(container, data) {
     if (locationsContainer) {
       locationsContainer.innerHTML = '';
       
+      // Add a better title for the locations section
+      const locationSectionTitle = container.querySelector('div.mt-6 > h3');
+      if (locationSectionTitle) {
+        locationSectionTitle.innerHTML = '<i class="fas fa-globe-americas text-indigo-500 mr-2"></i> Top Target Regions';
+      }
+      
+      // Change the layout to a more visual grid with flags/icons
+      locationsContainer.className = 'grid grid-cols-1 md:grid-cols-3 gap-3 mt-3';
+      
       if (data.ideal_locations && data.ideal_locations.length > 0) {
-        data.ideal_locations.slice(0, 10).forEach(location => {
+        // Limit to 5 locations
+        data.ideal_locations.slice(0, 5).forEach(location => {
+          // Get region code for flag (simple implementation)
+          const regionCode = getRegionCode(location.country_region);
+          
           locationsContainer.innerHTML += `
-            <div class="bg-gray-100 p-2 rounded-md">
-              <span class="font-medium">${location.country_region || 'Location'}</span>
+            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-3 shadow-sm border border-indigo-100 transform transition-transform hover:scale-105">
+              <div class="flex items-center mb-2">
+                <span class="text-xl mr-2">${getRegionEmoji(regionCode)}</span>
+                <span class="font-semibold text-indigo-800">${location.country_region || 'Location'}</span>
+              </div>
               <p class="text-sm text-gray-600">${location.reason || 'No reason provided'}</p>
             </div>
           `;
         });
       } else if (data.search_keywords && data.search_keywords.length > 0) {
-        // If no locations, show keywords instead
-        data.search_keywords.slice(0, 10).forEach(keyword => {
+        // If no locations, show keywords instead (limited to 5)
+        data.search_keywords.slice(0, 5).forEach(keyword => {
           locationsContainer.innerHTML += `
-            <div class="bg-gray-100 p-2 rounded-md">
-              <span class="font-medium">${keyword}</span>
+            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-3 shadow-sm border border-indigo-100">
+              <div class="flex items-center">
+                <span class="text-indigo-500 mr-2"><i class="fas fa-tag"></i></span>
+                <span class="font-semibold text-indigo-800">${keyword}</span>
+              </div>
             </div>
           `;
         });
@@ -438,4 +465,37 @@ function setupLeadActionButtons() {
       }
     });
   });
+}
+
+// Helper function to get region emoji
+function getRegionEmoji(region) {
+  // Simple mapping of common regions to emojis
+  const regionMap = {
+    'United States': '🇺🇸',
+    'USA': '🇺🇸',
+    'North America': '🌎',
+    'Canada': '🇨🇦',
+    'Europe': '🇪🇺',
+    'UK': '🇬🇧',
+    'United Kingdom': '🇬🇧',
+    'Australia': '🇦🇺',
+    'Asia': '🌏',
+    'China': '🇨🇳',
+    'Japan': '🇯🇵',
+    'India': '🇮🇳',
+    'Brazil': '🇧🇷',
+    'South America': '🌎',
+    'Africa': '🌍',
+    'Middle East': '🌍',
+    'Global': '🌐'
+  };
+  
+  // Default globe emoji if no match
+  return regionMap[region] || '🌐';
+}
+
+// Helper function to get region code
+function getRegionCode(region) {
+  // For simplicity - we'll just return the region name
+  return region;
 }
