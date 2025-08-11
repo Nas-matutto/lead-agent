@@ -1,4 +1,6 @@
-# Lead Agent
+# Lead Agent v1 (DEPRECATED)
+
+Below are the details of what I attempted to build. This was a project to test out a UX flow for Agentic Lead generation and communication. A brand new project is being worked on with this one as a base. 
 
 An intelligent B2B lead generation tool powered by AI that helps you find and connect with your target audience.
 
